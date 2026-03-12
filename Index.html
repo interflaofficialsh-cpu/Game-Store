@@ -1,31 +1,142 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>My Photo Website</title>
+<title>Video Background Blur</title>
 
 <style>
+
 body{
     margin:0;
-    background:#000;
+    overflow:hidden;
+}
+
+/* loading screen */
+#loader{
+    position:fixed;
+    width:100%;
+    height:100%;
+    background:#111;
     display:flex;
     justify-content:center;
     align-items:center;
-    height:100vh;
+    z-index:9999;
+    transition:opacity 0.8s ease;
 }
 
-img{
-    max-width:100%;
-    max-height:100vh;
+/* fade out */
+#loader.hide{
+    opacity:0;
+    pointer-events:none;
 }
+
+/* loading container */
+.loader{
+    display:flex;
+    gap:10px;
+}
+
+/* dots */
+.loader span{
+    width:15px;
+    height:15px;
+    background:white;
+    border-radius:50%;
+    animation:bounce 1s infinite;
+}
+
+/* delay */
+.loader span:nth-child(1){ animation-delay:0s; }
+.loader span:nth-child(2){ animation-delay:0.2s; }
+.loader span:nth-child(3){ animation-delay:0.4s; }
+.loader span:nth-child(4){ animation-delay:0.6s; }
+.loader span:nth-child(5){ animation-delay:0.8s; }
+
+/* animation */
+@keyframes bounce{
+0%,80%,100%{
+transform:scale(0);
+opacity:0.3;
+}
+40%{
+transform:scale(1);
+opacity:1;
+}
+}
+
+/* video background */
+.bgvideo{
+    position:fixed;
+    right:0;
+    bottom:0;
+    min-width:100%;
+    min-height:100%;
+    z-index:-1;
+    filter:blur(8px);
+    transform:scale(1.1);
+}
+
+/* profile image */
+.profile{
+    width:120px;
+    height:120px;
+    border-radius:50%;
+    object-fit:cover;
+    display:block;
+    margin:20px auto;
+    position:relative;
+    z-index:1;
+}
+
 </style>
 
 </head>
 
 <body>
 
-<img src="https://image2url.com/r2/default/images/1773280967062-6e77d6ba-c528-40f2-8e80-779fad2a69d4.jpg">
+<!-- loading screen -->
+<div id="loader">
+<div class="loader">
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+</div>
+</div>
+
+<!-- video background -->
+<video autoplay muted loop class="bgvideo" id="bgvideo">
+<source src="https://github.com/interflaofficialsh-cpu/Game-Store/raw/refs/heads/main/VID-20260312-WA0016.mp4" type="video/mp4">
+</video>
+
+<!-- profile image -->
+<img src="https://raw.githubusercontent.com/interflaofficialsh-cpu/Game-Store/refs/heads/main/20260312_085109.png" class="profile" id="profile">
+
+<script>
+
+let video=document.getElementById("bgvideo");
+let image=document.getElementById("profile");
+
+let videoLoaded=false;
+let imageLoaded=false;
+
+video.oncanplaythrough=function(){
+videoLoaded=true;
+checkLoaded();
+}
+
+image.onload=function(){
+imageLoaded=true;
+checkLoaded();
+}
+
+function checkLoaded(){
+if(videoLoaded && imageLoaded){
+document.getElementById("loader").classList.add("hide");
+}
+}
+
+</script>
 
 </body>
 </html>
