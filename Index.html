@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html>
 <head>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
 <title>Video Background Blur</title>
 
 <style>
@@ -32,13 +35,13 @@ body{
 /* loading container */
 .loader{
     display:flex;
-    gap:10px;
+    gap:20px;
 }
 
-/* dots */
+/* dots (bigger) */
 .loader span{
-    width:15px;
-    height:15px;
+    width:32px;
+    height:32px;
     background:white;
     border-radius:50%;
     animation:bounce 1s infinite;
@@ -77,14 +80,33 @@ opacity:1;
 
 /* profile image */
 .profile{
-    width:120px;
-    height:120px;
+    width:28vw;
+    max-width:200px;
+    min-width:120px;
+    height:28vw;
+    max-height:200px;
+    min-height:120px;
     border-radius:50%;
     object-fit:cover;
     display:block;
-    margin:20px auto;
+    margin:40px auto;
     position:relative;
     z-index:1;
+}
+
+/* bigger for laptops */
+@media (min-width:900px){
+
+.loader span{
+width:40px;
+height:40px;
+}
+
+.profile{
+width:220px;
+height:220px;
+}
+
 }
 
 </style>
