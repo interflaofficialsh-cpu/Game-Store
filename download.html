@@ -1,221 +1,236 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="si">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Downloads</title>
+<title>Upload Download</title>
 
 <style>
-
 body{
     margin:0;
     font-family:Arial;
     overflow-x:hidden;
+    background:#000;
 }
 
-/* LOADING */
-.loader{
+/* OVERLAY */
+.overlay{
     position:fixed;
     top:0;
     left:0;
     width:100%;
     height:100%;
-    background:black;
+    background:rgba(0,0,0,0.6);
+    backdrop-filter:blur(6px);
+    z-index:-2;
+}
+
+.fade{
+    position:fixed;
+    width:100%;
+    height:100%;
+    background:linear-gradient(to bottom, rgba(0,0,0,0.4), rgba(0,0,0,0.7));
+    z-index:-1;
+}
+
+/* LOADER */
+#loader{
+    position:fixed;
+    width:100%;
+    height:100%;
+    background:#000;
     display:flex;
     justify-content:center;
     align-items:center;
     z-index:9999;
 }
 
-.loader .dot{
-    width:10px;
-    height:10px;
-    margin:4px;
+.loader{
+    display:flex;
+    gap:10px;
+}
+
+.loader span{
+    width:12px;
+    height:12px;
     background:white;
     border-radius:50%;
-    animation:bounce 1.2s infinite;
+    animation:bounce 0.6s infinite alternate;
 }
 
-.loader .dot:nth-child(1){animation-delay:0s;}
-.loader .dot:nth-child(2){animation-delay:0.2s;}
-.loader .dot:nth-child(3){animation-delay:0.4s;}
-.loader .dot:nth-child(4){animation-delay:0.6s;}
-.loader .dot:nth-child(5){animation-delay:0.8s;}
+.loader span:nth-child(2){animation-delay:0.1s;}
+.loader span:nth-child(3){animation-delay:0.2s;}
+.loader span:nth-child(4){animation-delay:0.3s;}
+.loader span:nth-child(5){animation-delay:0.4s;}
 
 @keyframes bounce{
-    0%,80%,100%{transform:scale(0.5);opacity:0.3;}
-    40%{transform:scale(1.2);opacity:1;}
+    from{transform:translateY(0);opacity:0.3;}
+    to{transform:translateY(-15px);opacity:1;}
 }
 
-/* VIDEO */
-.bgvideo{
-    position:fixed;
-    top:0;
-    left:0;
+/* CONTENT */
+#content{
+    display:none;
+    position:relative;
+    z-index:1;
+}
+
+/* AD BOX */
+.adbox{
+    width:90%;
+    height:150px;
+    margin:40px auto 10px auto;
+    background:#111;
+    border-radius:10px;
+    overflow:hidden;
+}
+
+.adbox video{
     width:100%;
     height:100%;
     object-fit:cover;
-    z-index:-1;
-    filter:blur(10px);
 }
 
-body::after{
-    content:"";
-    position:fixed;
-    top:0;
-    left:0;
+/* LINE */
+.line{
     width:100%;
-    height:100%;
-    background:rgba(0,0,0,0.5);
-    z-index:-1;
+    height:3px;
+    background:white;
 }
 
-/* TOP BAR */
-.topbar{
-    width:100%;
-    height:55px;
-    background:rgba(255,255,255,0.8);
-    backdrop-filter:blur(10px);
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-size:18px;
-    font-weight:bold;
-}
-
-/* SEARCH */
-.searchbox{
-    display:flex;
-    justify-content:center;
-    margin-top:20px;
-}
-
-.searchbox input{
-    width:85%;
-    max-width:320px;
-    height:36px;
-    border:none;
-    border-radius:6px;
-    padding-left:10px;
-    font-size:14px;
-    font-weight:bold;
-    background:rgba(255,255,255,0.2);
-    backdrop-filter:blur(10px);
-    color:black;
-    outline:none;
-}
-
-/* BOX */
-.imagebox{
-    width:92%;
-    height:70px; /* smaller because no image */
+/* SEARCH BAR */
+.search-box{
+    width:90%;
     margin:20px auto;
-    border-radius:10px;
-    overflow:hidden;
-    position:relative;
+    display:flex;
+    justify-content:center;
 }
 
-/* WHITE BAR ONLY */
-.whitebar{
+.search-box input{
     width:100%;
-    height:100%;
-    background:rgba(255,255,255,0.9);
-    backdrop-filter:blur(10px);
+    padding:12px 15px;
+    border:none;
+    border-radius:25px;
+    outline:none;
+    background:#222;
+    color:white;
+    font-size:16px;
+}
+
+/* WHITE BOX */
+.white-box{
+    width:88%;
+    margin:15px auto;
+    padding:15px;
+    height:110px;
+    background:white;
+    border-radius:15px;
     display:flex;
     align-items:center;
     justify-content:space-between;
-    padding:0 10px;
-    box-sizing:border-box;
-    border-radius:10px;
 }
 
 /* TEXT */
-.size{
-    font-size:12px;
+.file-info{
+    color:black;
+    font-size:16px;
     font-weight:bold;
 }
 
-.name{
-    font-size:14px;
-    font-weight:bold;
-}
-
-/* BUTTON */
-.downloadbtn{
+/* DOWNLOAD BUTTON */
+.download-btn{
+    padding:10px 18px;
     background:black;
     color:white;
     border:none;
-    padding:6px 12px;
-    border-radius:5px;
-    font-size:12px;
+    border-radius:20px;
+    font-size:14px;
+    font-weight:bold;
     text-decoration:none;
+    display:inline-block;
+
+    /* ✅ BLUE HIGHLIGHT REMOVE */
+    -webkit-tap-highlight-color: transparent;
 }
 
+.download-btn:hover{
+    background:#333;
+}
+
+.download-btn:focus{
+    outline:none;
+}
+
+.download-btn:active{
+    background:black;
+}
 </style>
 </head>
 
 <body>
 
-<div class="loader" id="loader">
-    <div class="dot"></div>
-    <div class="dot"></div>
-    <div class="dot"></div>
-    <div class="dot"></div>
-    <div class="dot"></div>
+<div class="overlay"></div>
+<div class="fade"></div>
+
+<!-- LOADER -->
+<div id="loader">
+    <div class="loader">
+        <span></span><span></span><span></span><span></span><span></span>
+    </div>
 </div>
 
-<video class="bgvideo" id="bgvideo" autoplay muted loop playsinline>
-<source src="https://github.com/interflaofficialsh-cpu/Game-Store/raw/refs/heads/main/Video.mp4" type="video/mp4">
-</video>
+<!-- CONTENT -->
+<div id="content">
 
-<div class="topbar">DOWNLOADS</div>
-
-<div class="searchbox">
-<input type="text" id="search" placeholder="Search name..." onkeyup="searchFiles()">
+<!-- VIDEO ADS BOX -->
+<div class="adbox">
+    <video autoplay muted loop playsinline>
+        <source src="https://github.com/interflaofficialsh-cpu/Game-Store/raw/refs/heads/main/lv_0_20260317142802.mp4" type="video/mp4">
+    </video>
 </div>
 
-<div class="imagebox">
-<div class="whitebar">
-<div class="size">00 MB / GB</div>
-<div class="name">TEST 1</div>
-<a class="downloadbtn" href="https://www.mediafire.com/folder/t7pvz1jruybzh/WEBSITE+UPCOMING" target="_blank">DOWNLOAD</a>
-</div>
+<div class="line"></div>
+
+<!-- SEARCH BAR -->
+<div class="search-box">
+    <input type="text" id="searchInput" placeholder="Search here..." onkeyup="searchBox()">
 </div>
 
-<div class="imagebox">
-<div class="whitebar">
-<div class="size">00 MB / GB</div>
-<div class="name">TEST 2</div>
-<a class="downloadbtn" href="https://www.mediafire.com/folder/t7pvz1jruybzh/WEBSITE+UPCOMING" target="_blank">DOWNLOAD</a>
+<!-- BOX 1 -->
+<div class="white-box" data-name="game1">
+    <div class="file-info">TEST 1 &nbsp;&nbsp; 00 - MB / GB</div>
+    <a href="https://www.mediafire.com/view/pbp34vm4anjtbyw/20260317_125106.png/file" target="_blank" class="download-btn">DOWNLOAD</a>
 </div>
+
+<!-- BOX 2 -->
+<div class="white-box" data-name="movie">
+    <div class="file-info">TEST 2 &nbsp;&nbsp; 00 - MB / GB</div>
+    <a href="https://www.mediafire.com/" target="_blank" class="download-btn">DOWNLOAD</a>
+</div>
+
 </div>
 
 <script>
-
-function searchFiles(){
-let input = document.getElementById("search").value.toLowerCase().trim();
-let boxes = document.querySelectorAll(".imagebox");
-
-boxes.forEach(box => {
-let name = box.querySelector(".name").textContent.toLowerCase().trim();
-
-if(name.includes(input)){
-    box.style.display="block";
-}else{
-    box.style.display="none";
-}
+window.addEventListener("load", () => {
+    document.getElementById("loader").style.display = "none";
+    document.getElementById("content").style.display = "block";
 });
 
-if(input===""){
-    boxes.forEach(box => box.style.display="block");
-}
-}
+/* SEARCH FUNCTION */
+function searchBox(){
+    let input = document.getElementById("searchInput").value.toLowerCase();
+    let boxes = document.querySelectorAll(".white-box");
 
-let video=document.getElementById("bgvideo");
-video.addEventListener("canplaythrough",()=>{
-    document.getElementById("loader").style.display="none";
-});
+    boxes.forEach(box => {
+        let name = box.getAttribute("data-name").toLowerCase();
 
+        if(name.includes(input)){
+            box.style.display = "flex";
+        }else{
+            box.style.display = "none";
+        }
+    });
+}
 </script>
 
 </body>
