@@ -1,289 +1,265 @@
 <!DOCTYPE html>
-<html>
+<html lang="si">
 <head>
-
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-
-<title>Video Background Blur</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&display=swap" rel="stylesheet">
-
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<meta charset="UTF-8">
+<title>Interflash Official</title>
 
 <style>
 
 body{
-margin:0;
-font-family:'Orbitron', sans-serif;
-overflow-y:auto;
-text-align:center;
-color:white;
+    margin:0;
+    font-family:Arial;
+    overflow:hidden;
 }
 
-/* remove mobile blue tap highlight */
-a, button{
--webkit-tap-highlight-color: transparent;
-outline:none;
+/* VIDEO BACKGROUND */
+.bgvideo{
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    z-index:-3;
 }
 
-/* container */
-.container{
-position:relative;
-z-index:1;
-padding-top:20px;
-padding-bottom:80px;
+/* DARK + BLUR OVERLAY */
+.overlay{
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background:rgba(0,0,0,0.6);
+    backdrop-filter:blur(6px);
+    -webkit-backdrop-filter:blur(6px);
+    z-index:-2;
 }
 
-/* loading screen */
+/* EXTRA SOFT FADE LAYER */
+.fade{
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background:linear-gradient(to bottom, rgba(0,0,0,0.4), rgba(0,0,0,0.7));
+    z-index:-1;
+}
+
+/* LOADING */
 #loader{
-position:fixed;
-width:100%;
-height:100%;
-background:#111;
-display:flex;
-justify-content:center;
-align-items:center;
-z-index:9999;
-transition:opacity 0.8s ease;
+    position:fixed;
+    width:100%;
+    height:100%;
+    background:#000;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    z-index:9999;
 }
 
-#loader.hide{
-opacity:0;
-pointer-events:none;
-}
-
-/* loading dots */
 .loader{
-display:flex;
-gap:12px;
+    display:flex;
+    gap:10px;
 }
 
 .loader span{
-width:14px;
-height:14px;
-background:white;
-border-radius:50%;
-animation:bounce 1s infinite;
+    width:12px;
+    height:12px;
+    background:white;
+    border-radius:50%;
+    animation:bounce 0.6s infinite alternate;
 }
 
-.loader span:nth-child(1){animation-delay:0s;}
-.loader span:nth-child(2){animation-delay:0.2s;}
-.loader span:nth-child(3){animation-delay:0.4s;}
-.loader span:nth-child(4){animation-delay:0.6s;}
-.loader span:nth-child(5){animation-delay:0.8s;}
+.loader span:nth-child(2){animation-delay:0.1s;}
+.loader span:nth-child(3){animation-delay:0.2s;}
+.loader span:nth-child(4){animation-delay:0.3s;}
+.loader span:nth-child(5){animation-delay:0.4s;}
 
 @keyframes bounce{
-0%,80%,100%{transform:scale(0);opacity:0.3;}
-40%{transform:scale(1);opacity:1;}
+    from{transform:translateY(0);opacity:0.3;}
+    to{transform:translateY(-15px);opacity:1;}
 }
 
-/* background video */
-.bgvideo{
-position:fixed;
-right:0;
-bottom:0;
-min-width:100%;
-min-height:100%;
-z-index:-1;
-filter:blur(8px);
-transform:scale(1.1);
+/* content */
+#content{
+    display:none;
+    position:relative;
+    z-index:1;
 }
 
-/* profile image (smaller) */
-.profile{
-width:20vw;
-max-width:140px;
-min-width:90px;
-height:20vw;
-max-height:140px;
-min-height:90px;
-border-radius:50%;
-object-fit:cover;
-display:block;
-margin:20px auto 10px auto;
+/* buttons */
+button{
+    background:none;
+    border:none;
+    color:white;
+    font-size:18px;
+    cursor:pointer;
+    font-weight:bold;
+    -webkit-tap-highlight-color: transparent;
 }
 
-/* logo text (smaller) */
-.logo-text{
-font-size:14px;
-letter-spacing:4px;
-text-shadow:0 0 10px rgba(255,255,255,0.6);
-margin-bottom:20px;
+/* top bar */
+.topbar{
+    width:100%;
+    height:70px;
+    background:white;
+    display:flex;
+    align-items:center;
+    justify-content:center;
 }
 
-/* button container */
-.button-container{
-display:flex;
-flex-direction:column;
-gap:15px;
-align-items:center;
+.topbar img{
+    height:60px;
 }
 
-/* glass buttons (smaller) */
-.glass-btn{
-padding:10px 28px;
-border-radius:25px;
-background:rgba(255,255,255,0.1);
-backdrop-filter:blur(10px);
-border:1px solid rgba(255,255,255,0.3);
-color:white;
-font-size:12px;
-letter-spacing:1px;
-text-decoration:none;
-box-shadow:0 0 12px rgba(255,255,255,0.2);
-transition:0.3s;
+/* buttons row */
+.container{
+    margin-top:40px;
+    display:flex;
+    justify-content:center;
+    gap:40px;
 }
 
-.glass-btn:active{
-background:rgba(255,255,255,0.1);
-transform:scale(1);
+/* ad box */
+.adbox{
+    width:90%;
+    height:150px;
+    margin:40px auto 10px auto;
+    background:#111;
+    border-radius:10px;
+    overflow:hidden;
 }
 
-.glass-btn:hover{
-background:rgba(255,255,255,0.2);
-transform:scale(1.05);
+.adbox img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
 }
 
-/* social icons (smaller) */
-.social-icons{
-margin-top:20px;
-display:flex;
-justify-content:center;
-gap:22px;
-font-size:20px;
+/* line */
+.line{
+    width:100%;
+    height:3px;
+    background:white;
 }
 
-.social-icons a{
-color:white;
-transition:0.3s;
+/* text */
+.servertext,.apktext{
+    text-align:center;
+    color:white;
+    margin-top:30px;
+    font-weight:bold;
 }
 
-.social-icons a:hover{
-transform:scale(1.4);
-color:#00ffff;
+/* GLASS BOX */
+.glassbox{
+    width:100%;
+    height:60px;
+    margin-top:20px;
+    display:flex;
+    align-items:center;
+
+    background:rgba(255,255,255,0.1);
+    backdrop-filter:blur(10px);
+    -webkit-backdrop-filter:blur(10px);
+
+    border:1px solid rgba(255,255,255,0.2);
 }
 
-/* laptop screens */
-@media (min-width:900px){
-
-.profile{
-width:160px;
-height:160px;
+.storebtn{
+    margin-left:15px;
+    color:white;
 }
 
-.logo-text{
-font-size:18px;
+.smallimgbox{
+    width:40px;
+    height:40px;
+    margin-left:10px;
+    border-radius:8px;
+    overflow:hidden;
 }
 
-.button-container{
-flex-direction:row;
-justify-content:center;
+.smallimgbox img{
+    width:100%;
+    height:100%;
 }
 
-.glass-btn{
-font-size:14px;
-padding:12px 40px;
-}
-
-}
-
-/* phone landscape */
-@media (orientation: landscape){
-
-.button-container{
-flex-direction:row;
-justify-content:center;
-}
-
+.filesize{
+    margin-left:auto;
+    margin-right:15px;
+    font-size:13px;
+    color:white;
+    font-weight:bold;
 }
 
 </style>
-
 </head>
 
 <body>
 
-<!-- loading screen -->
-<div id="loader">
-<div class="loader">
-<span></span>
-<span></span>
-<span></span>
-<span></span>
-<span></span>
-</div>
-</div>
-
-<!-- video background -->
-<video autoplay muted loop class="bgvideo" id="bgvideo">
-<source src="https://github.com/interflaofficialsh-cpu/Game-Store/raw/refs/heads/main/VID-20260312-WA0016.mp4" type="video/mp4">
+<!-- VIDEO -->
+<video id="bgvid" class="bgvideo" autoplay muted loop>
+    <source src="https://github.com/interflaofficialsh-cpu/Game-Store/raw/refs/heads/main/Video.mp4" type="video/mp4">
 </video>
 
-<div class="container">
+<!-- BLUR + DARK -->
+<div class="overlay"></div>
 
-<img src="https://raw.githubusercontent.com/interflaofficialsh-cpu/Game-Store/refs/heads/main/20260312_085109.png" class="profile" id="profile">
+<!-- EXTRA FADE -->
+<div class="fade"></div>
 
-<div class="logo-text">INTERFLASH OFFICIAL</div>
-
-<div class="button-container">
-
-<a href="#" class="glass-btn">BOOKING SECTION</a>
-
-<a href="#" class="glass-btn">DOWNLOAD SECTION</a>
-
+<!-- LOADER -->
+<div id="loader">
+    <div class="loader">
+        <span></span><span></span><span></span><span></span><span></span>
+    </div>
 </div>
 
-<!-- social icons -->
-<div class="social-icons">
+<!-- CONTENT -->
+<div id="content">
 
-<a href="https://www.tiktok.com/@interflash.official?_r=1&_t=ZS-94caIf05Hy3" target="_blank">
-<i class="fab fa-tiktok"></i>
-</a>
+<div class="topbar">
+    <img src="https://raw.githubusercontent.com/interflaofficialsh-cpu/Game-Store/refs/heads/main/logo.jpg">
+</div>
 
-<a href="https://youtube.com/@interflash.official?si=M8rWAiEiSadU3Iri" target="_blank">
-<i class="fab fa-youtube"></i>
-</a>
+<div class="container">
+    <button onclick="location.href='upload.html'">UPLOAD</button>
+    <button onclick="location.href='download.html'">DOWNLOAD</button>
+</div>
 
-<a href="https://whatsapp.com/channel/0029VbCWfty9hXFEHfGSKj40" target="_blank">
-<i class="fab fa-whatsapp"></i>
-</a>
+<div class="adbox">
+<img src="https://raw.githubusercontent.com/interflaofficialsh-cpu/Game-Store/refs/heads/main/logo.jpg">
+</div>
 
-<a href="#" onclick="facebookError()">
-<i class="fab fa-facebook"></i>
-</a>
+<div class="line"></div>
 
+<div class="servertext">SERVERS</div>
+
+<div class="glassbox">
+    <button class="storebtn" onclick="location.href='game.html'">GAME STORE</button>
+</div>
+
+<div class="apktext">APK DOWNLOAD</div>
+
+<div class="glassbox">
+    <div class="smallimgbox">
+        <img src="https://raw.githubusercontent.com/interflaofficialsh-cpu/Game-Store/refs/heads/main/logo.jpg">
+    </div>
+    <button class="storebtn">COMING SOON</button>
+    <div class="filesize">00 - MB</div>
 </div>
 
 </div>
 
 <script>
+const video = document.getElementById("bgvid");
 
-let video=document.getElementById("bgvideo");
-let image=document.getElementById("profile");
-
-let videoLoaded=false;
-let imageLoaded=false;
-
-video.oncanplaythrough=function(){
-videoLoaded=true;
-checkLoaded();
-}
-
-image.onload=function(){
-imageLoaded=true;
-checkLoaded();
-}
-
-function checkLoaded(){
-if(videoLoaded && imageLoaded){
-document.getElementById("loader").classList.add("hide");
-}
-}
-
-function facebookError(){
-alert("ERROR 404\nFacebook Page Not Available");
-}
-
+video.addEventListener("loadeddata", () => {
+    document.getElementById("loader").style.display = "none";
+    document.getElementById("content").style.display = "block";
+});
 </script>
 
 </body>
