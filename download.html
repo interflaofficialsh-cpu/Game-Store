@@ -117,22 +117,30 @@ body{
     font-size:16px;
 }
 
-/* WHITE BOX */
+/* GLASS BOX */
 .white-box{
     width:88%;
     margin:15px auto;
     padding:15px;
     height:110px;
-    background:white;
+
+    /* ✅ GLASS EFFECT */
+    background:rgba(255,255,255,0.08);
+    backdrop-filter:blur(12px);
+    -webkit-backdrop-filter:blur(12px);
+
     border-radius:15px;
     display:flex;
     align-items:center;
     justify-content:space-between;
+
+    border:1px solid rgba(255,255,255,0.2);
+    box-shadow:0 4px 20px rgba(0,0,0,0.5);
 }
 
 /* TEXT */
 .file-info{
-    color:black;
+    color:white;
     font-size:16px;
     font-weight:bold;
 }
@@ -149,7 +157,6 @@ body{
     text-decoration:none;
     display:inline-block;
 
-    /* ✅ BLUE HIGHLIGHT REMOVE */
     -webkit-tap-highlight-color: transparent;
 }
 
@@ -196,17 +203,6 @@ body{
     <input type="text" id="searchInput" placeholder="Search here..." onkeyup="searchBox()">
 </div>
 
-<!-- BOX 1 -->
-<div class="white-box" data-name="TEST 1">
-    <div class="file-info">TEST 1 &nbsp;&nbsp; 00 - MB / GB</div>
-    <a href="https://www.mediafire.com/view/pbp34vm4anjtbyw/20260317_125106.png/file" target="_blank" class="download-btn">DOWNLOAD</a>
-</div>
-
-<!-- BOX 2 -->
-<div class="white-box" data-name="TEST 2">
-    <div class="file-info">TEST 2 &nbsp;&nbsp; 00 - MB / GB</div>
-    <a href="https://www.mediafire.com/" target="_blank" class="download-btn">DOWNLOAD</a>
-</div>
 
 </div>
 
