@@ -1,65 +1,38 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Install App</title>
-
-  <link rel="manifest" href="manifest.json">
-  <meta name="theme-color" content="#000000">
-
-  <style>
-    body {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      background: black;
-    }
-
-    button {
-      padding: 20px 40px;
-      font-size: 20px;
-      background: green;
-      color: white;
-      border: none;
-      border-radius: 10px;
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FB Video Downloader</title>
+<style>
+body { font-family: Arial; text-align:center; margin:50px;}
+input { width: 300px; padding:10px; }
+button { padding:10px 20px; margin-left:10px; cursor:pointer; }
+a.download-link { display:block; margin-top:20px; font-size:18px; color:green; text-decoration:none; }
+</style>
 </head>
-
 <body>
-
-<button id="installBtn">Install App</button>
+<h1>Facebook Video Downloader</h1>
+<input type="text" id="videoUrl" placeholder="Paste Facebook Video URL">
+<button onclick="downloadVideo()">Download</button>
+<a id="downloadLink" class="download-link" target="_blank"></a>
 
 <script>
-let installPrompt = null;
+async function downloadVideo(){
+    const url = document.getElementById('videoUrl').value;
+    if(!url){ alert('Paste the video URL!'); return; }
 
-window.addEventListener('beforeinstallprompt', (e) => {
-  console.log("Install available ✅");
-  e.preventDefault();
-  installPrompt = e;
-});
-
-document.getElementById("installBtn").addEventListener("click", async () => {
-
-  if (!installPrompt) {
-    alert("Install not ready 😢");
-    return;
-  }
-
-  installPrompt.prompt();
-
-  const result = await installPrompt.userChoice;
-  console.log(result);
-
-  installPrompt = null;
-});
-
-// service worker
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('service-worker.js');
+    // Call backend API
+    const response = await fetch('/getVideo?url=' + encodeURIComponent(url));
+    const data = await response.json();
+    if(data.success){
+        const link = document.getElementById('downloadLink');
+        link.href = data.videoUrl;
+        link.textContent = 'Click here to download video';
+    } else {
+        alert('Video not found or cannot download!');
+    }
 }
 </script>
-
 </body>
 </html>
