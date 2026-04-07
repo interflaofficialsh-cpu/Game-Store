@@ -1,243 +1,77 @@
 <!DOCTYPE html>
-<html lang="si">
+<html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Upload Download</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Download App</title>
 
-<style>
-body{
-    margin:0;
-    font-family:Arial;
-    overflow-x:hidden;
-    background:#000;
-}
+  <link rel="manifest" href="manifest.json">
 
-/* REMOVE BLUE TAP HIGHLIGHT */
-button, a{
-    -webkit-tap-highlight-color: transparent;
-}
+  <meta name="theme-color" content="#111111">
 
-button:focus, a:focus{
-    outline:none;
-}
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: #111;
+      font-family: Arial;
+    }
 
-button:active, a:active{
-    background:none;
-}
+    #installBtn {
+      padding: 20px 40px;
+      font-size: 20px;
+      background: #28a745;
+      border: none;
+      border-radius: 12px;
+      color: white;
+      cursor: pointer;
+      transition: 0.3s;
+    }
 
-/* OVERLAY */
-.overlay{
-    position:fixed;
-    top:0;
-    left:0;
-    width:100%;
-    height:100%;
-    background:rgba(0,0,0,0.6);
-    backdrop-filter:blur(6px);
-    z-index:-2;
-}
-
-.fade{
-    position:fixed;
-    width:100%;
-    height:100%;
-    background:linear-gradient(to bottom, rgba(0,0,0,0.4), rgba(0,0,0,0.7));
-    z-index:-1;
-}
-
-/* LOADER */
-#loader{
-    position:fixed;
-    width:100%;
-    height:100%;
-    background:#000;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    z-index:9999;
-}
-
-.loader{
-    display:flex;
-    gap:10px;
-}
-
-.loader span{
-    width:12px;
-    height:12px;
-    background:white;
-    border-radius:50%;
-    animation:bounce 0.6s infinite alternate;
-}
-
-.loader span:nth-child(2){animation-delay:0.1s;}
-.loader span:nth-child(3){animation-delay:0.2s;}
-.loader span:nth-child(4){animation-delay:0.3s;}
-.loader span:nth-child(5){animation-delay:0.4s;}
-
-@keyframes bounce{
-    from{transform:translateY(0);opacity:0.3;}
-    to{transform:translateY(-15px);opacity:1;}
-}
-
-/* CONTENT */
-#content{
-    display:none;
-    position:relative;
-    z-index:1;
-}
-
-/* BUTTON */
-button{
-    background:none;
-    border:none;
-    color:white;
-    font-size:16px;
-    cursor:pointer;
-    font-weight:bold;
-}
-
-/* TOP BAR */
-.topbar{
-    width:100%;
-    height:70px;
-    background:white;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-}
-
-.topbar img{
-    height:60px;
-}
-
-/* AD BOX */
-.adbox{
-    width:90%;
-    height:150px;
-    margin:40px auto 10px auto;
-    background:#111;
-    border-radius:10px;
-    overflow:hidden;
-}
-
-.adbox video{
-    width:100%;
-    height:100%;
-    object-fit:cover;
-}
-
-/* LINE */
-.line{
-    width:100%;
-    height:3px;
-    background:white;
-}
-
-/* TEXT */
-.servertext,.apktext{
-    text-align:center;
-    color:white;
-    margin-top:30px;
-    font-weight:bold;
-}
-
-/* GLASS BOX */
-.glassbox{
-    width:95%;
-    height:60px;
-    margin:15px auto;
-    display:flex;
-    align-items:center;
-    background:rgba(255,255,255,0.1);
-    backdrop-filter:blur(10px);
-    border:1px solid rgba(255,255,255,0.2);
-    border-radius:10px;
-}
-
-.storebtn{
-    margin-left:15px;
-    color:white;
-}
-
-/* SMALL IMAGE */
-.smallimgbox{
-    width:40px;
-    height:40px;
-    margin-left:10px;
-    border-radius:8px;
-    overflow:hidden;
-}
-
-.smallimgbox img{
-    width:100%;
-    height:100%;
-}
-
-.filesize{
-    margin-left:auto;
-    margin-right:15px;
-    font-size:13px;
-    color:white;
-    font-weight:bold;
-}
-</style>
+    #installBtn:hover {
+      background: #218838;
+      transform: scale(1.1);
+    }
+  </style>
 </head>
-
 <body>
 
-<div class="overlay"></div>
-<div class="fade"></div>
-
-<!-- LOADER -->
-<div id="loader">
-    <div class="loader">
-        <span></span><span></span><span></span><span></span><span></span>
-    </div>
-</div>
-
-<!-- CONTENT -->
-<div id="content">
-
-<!-- VIDEO ADS BOX -->
-<div class="adbox">
-    <video autoplay muted loop playsinline>
-        <source src="https://github.com/interflaofficialsh-cpu/Game-Store/raw/refs/heads/main/lv_0_20260317142802.mp4" type="video/mp4">
-    </video>
-</div>
-
-<div class="line"></div>
-
-<div class="servertext">SERVERS</div>
-
-<div class="glassbox">
-    <button class="storebtn" onclick="location.href='pcgamestore.html'">PC GAME STORE</button>
-
-    <button class="storebtn" style="margin-left:auto; margin-right:15px;" onclick="location.href='download.html'">
-        DOWNLOAD
-    </button>
-</div>
-
-<div class="topbar">
-    <img src="https://raw.githubusercontent.com/interflaofficialsh-cpu/Game-Store/refs/heads/main/logo.jpg">
-</div>
-
-<div class="apktext">OTHER WEBSITE</div>
-
-<div class="glassbox">
-    <div>
-    </div>
-    <div class="storebtn" style="font-weight:bold;">PLEX - SOON ! -  MOVE WEBSITE WATCH AND DOWNLOAD</div>
-</div>
-
-</div>
+<button id="installBtn">Download App</button>
 
 <script>
-window.addEventListener("load", () => {
-    document.getElementById("loader").style.display = "none";
-    document.getElementById("content").style.display = "block";
+let deferredPrompt;
+
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  deferredPrompt = e;
 });
+
+document.getElementById("installBtn").addEventListener("click", () => {
+  if (deferredPrompt) {
+    deferredPrompt.prompt();
+
+    deferredPrompt.userChoice.then((choiceResult) => {
+      if (choiceResult.outcome === 'accepted') {
+        alert("App Installed ✅");
+      } else {
+        alert("Install Cancelled ❌");
+      }
+      deferredPrompt = null;
+    });
+
+  } else {
+    alert("Install option not available 😢");
+  }
+});
+
+// Register Service Worker
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('service-worker.js')
+    .then(() => console.log("Service Worker Registered"));
+}
 </script>
 
 </body>
