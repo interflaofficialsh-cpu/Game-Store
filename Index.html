@@ -1,38 +1,142 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>FB Video Downloader</title>
-<style>
-body { font-family: Arial; text-align:center; margin:50px;}
-input { width: 300px; padding:10px; }
-button { padding:10px 20px; margin-left:10px; cursor:pointer; }
-a.download-link { display:block; margin-top:20px; font-size:18px; color:green; text-decoration:none; }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Glass UI</title>
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: #000;
+            font-family: Arial, sans-serif;
+        }
+
+        /* Top Glass Bar */
+        .glass-bar-top {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 70px;
+            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.1);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        /* Bottom Glass Bar */
+        .glass-bar-bottom {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 55px;
+            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.1);
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+        }
+
+        /* Icons */
+        .glass-bar-bottom i {
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        .glass-bar-bottom i:hover {
+            color: #00ffcc;
+        }
+
+        /* Search */
+        .search-container {
+            margin-top: 100px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .search-box {
+            width: 220px;
+            padding: 12px 20px;
+            border-radius: 30px;
+            border: none;
+            outline: none;
+            color: white;
+            font-size: 16px;
+
+            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .search-box::placeholder {
+            color: #ccc;
+        }
+
+        /* Ads */
+        .ads-container {
+            margin-top: 30px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .ads-box {
+            width: 95%;
+            max-width: 800px;
+            height: 120px;
+            border-radius: 20px;
+
+            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 18px;
+        }
+    </style>
 </head>
 <body>
-<h1>Facebook Video Downloader</h1>
-<input type="text" id="videoUrl" placeholder="Paste Facebook Video URL">
-<button onclick="downloadVideo()">Download</button>
-<a id="downloadLink" class="download-link" target="_blank"></a>
 
-<script>
-async function downloadVideo(){
-    const url = document.getElementById('videoUrl').value;
-    if(!url){ alert('Paste the video URL!'); return; }
+    <!-- Top Bar -->
+    <div class="glass-bar-top">
+        <span style="color: #FF6600;">PR!ME STORE</span>
+    </div>
 
-    // Call backend API
-    const response = await fetch('/getVideo?url=' + encodeURIComponent(url));
-    const data = await response.json();
-    if(data.success){
-        const link = document.getElementById('downloadLink');
-        link.href = data.videoUrl;
-        link.textContent = 'Click here to download video';
-    } else {
-        alert('Video not found or cannot download!');
-    }
-}
-</script>
+    <!-- Search -->
+    <div class="search-container">
+        <input type="text" class="search-box" placeholder="Search...">
+    </div>
+
+    <!-- Ads -->
+    <div class="ads-container">
+        <div class="ads-box">
+            Ads Space
+        </div>
+    </div>
+
+    <!-- Bottom Bar -->
+    <div class="glass-bar-bottom">
+        <i class="fa fa-home"></i>
+        <i class="fa fa-message"></i>
+        <i class="fa fa-shopping-cart"></i>
+        <i class="fa fa-user"></i>
+    </div>
+
 </body>
-</html>
+    </html>
