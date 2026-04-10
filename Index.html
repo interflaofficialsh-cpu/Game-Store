@@ -16,33 +16,15 @@
             font-family: Arial, sans-serif;
         }
 
-        /* Top Glass Bar */
-        .glass-bar-top {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 70px;
-            backdrop-filter: blur(10px);
-            background: rgba(255, 255, 255, 0.1);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 22px;
-            font-weight: bold;
-        }
-
         /* Bottom Glass Bar */
         .glass-bar-bottom {
             position: fixed;
             bottom: 0;
             left: 0;
             width: 100%;
-            height: 55px;
+            height: 65px;
             backdrop-filter: blur(10px);
-            background: rgba(255, 255, 255, 0.1);
+            background: #FF6600;
             border-top: 1px solid rgba(255, 255, 255, 0.2);
 
             display: flex;
@@ -50,20 +32,34 @@
             align-items: center;
         }
 
-        /* Icons */
-        .glass-bar-bottom i {
+        /* Nav Items */
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
             color: white;
-            font-size: 20px;
+            font-size: 11px;
             cursor: pointer;
         }
 
-        .glass-bar-bottom i:hover {
-            color: #00ffcc;
+        .nav-item i {
+            font-size: 18px;
+            margin-bottom: 3px;
+        }
+
+        .nav-item span {
+            font-size: 10px;
+        }
+
+        /* Hover */
+        .nav-item:hover i,
+        .nav-item:hover span {
+            color: #ffff66;
         }
 
         /* Search */
         .search-container {
-            margin-top: 100px;
+            margin-top: 40px;
             display: flex;
             justify-content: center;
         }
@@ -113,11 +109,6 @@
 </head>
 <body>
 
-    <!-- Top Bar -->
-    <div class="glass-bar-top">
-        <span style="color: #FF6600;">PR!ME STORE</span>
-    </div>
-
     <!-- Search -->
     <div class="search-container">
         <input type="text" class="search-box" placeholder="Search...">
@@ -132,11 +123,23 @@
 
     <!-- Bottom Bar -->
     <div class="glass-bar-bottom">
-        <i class="fa fa-home"></i>
-        <i class="fa fa-message"></i>
-        <i class="fa fa-shopping-cart"></i>
-        <i class="fa fa-user"></i>
+        <div class="nav-item">
+            <i class="fa fa-home"></i>
+            <span>𝗛𝗢𝗠𝗘</span>
+        </div>
+        <div class="nav-item">
+            <i class="fa fa-message"></i>
+            <span>𝗠𝗘𝗦𝗦𝗔𝗚𝗘𝗦</span>
+        </div>
+        <div class="nav-item">
+            <i class="fa fa-shopping-cart"></i>
+            <span>𝗖𝗔𝗥𝗧</span>
+        </div>
+        <div class="nav-item">
+            <i class="fa fa-user"></i>
+            <span>𝗣𝗥𝗢𝗙𝗜𝗟𝗘</span>
+        </div>
     </div>
 
 </body>
-    </html>
+</html>
