@@ -1,77 +1,112 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>YouTube Downloader</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>YouTube MP3 Downloader</title>
+
+<style>
+body {
+    font-family: Arial;
+    background: #111;
+    color: white;
+    text-align: center;
+    padding: 20px;
+}
+
+.container {
+    max-width: 500px;
+    margin: auto;
+    background: #1e1e1e;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+input {
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+    border: none;
+    border-radius: 5px;
+}
+
+button {
+    margin-top: 10px;
+    padding: 10px;
+    width: 100%;
+    border: none;
+    background: red;
+    color: white;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background: darkred;
+}
+
+.result {
+    margin-top: 20px;
+    text-align: left;
+    background: #2a2a2a;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+a {
+    color: lightgreen;
+}
+</style>
 </head>
 
-<body style="text-align:center; background:#111; color:#fff; padding:40px; font-family:sans-serif;">
+<body>
 
-<h1>🎬 YouTube Downloader</h1>
+<div class="container">
+    <h2>🎵 YouTube MP3 Downloader</h2>
 
-<input type="text" id="url" placeholder="Paste YouTube link"
-style="width:60%; padding:10px;">
+    <input type="text" id="url" placeholder="Paste YouTube URL">
 
-<button onclick="startProcess()">Download</button>
+    <button onclick="getMP3()">Get MP3 Link</button>
 
-<p id="status"></p>
-
-<div id="player"></div>
+    <div class="result" id="result">
+        Result will show here...
+    </div>
+</div>
 
 <script>
-async function startProcess() {
-  const url = document.getElementById("url").value;
-  const status = document.getElementById("status");
-  const player = document.getElementById("player");
+async function getMP3() {
 
-  player.innerHTML = "";
-  status.innerText = "⏳ Processing...";
+    let url = document.getElementById("url").value;
+    let result = document.getElementById("result");
 
-  const api = `https://supunmd.vercel.app/api/download/ytmp4/dl?url=${url}&quality=720p&apikey=supunmd-kj5wxaqt3iq3vqde3sxrdl`;
-
-  try {
-    const res = await fetch(api);
-    const data = await res.json();
-
-    if (!data.status) {
-      status.innerText = "❌ Failed!";
-      return;
+    if (!url) {
+        alert("Please enter YouTube URL");
+        return;
     }
 
-    const videoUrl = data.data.download_url;
-    const title = data.data.title;
+    result.innerHTML = "Loading... ⏳";
 
-    status.innerText = "⬇️ Downloading...";
+    try {
+        let api = `https://supunmd.vercel.app/api/download/ytmp3/dl?url=${encodeURIComponent(url)}&quality=128k&apikey=supunmd-kj5wxaqt3iq3vqde3sxrdl`;
 
-    // 📥 Step 1: Download video
-    const response = await fetch(videoUrl);
-    const blob = await response.blob();
+        let res = await fetch(api);
+        let data = await res.json();
 
-    const blobUrl = URL.createObjectURL(blob);
+        if (data.status) {
+            result.innerHTML = `
+                <p><b>Title:</b> ${data.data.title}</p>
+                <p><b>Duration:</b> ${data.data.duration} sec</p>
+                <p><b>Quality:</b> ${data.data.quality}</p>
+                <p><a href="${data.data.downloadUrl}" target="_blank">⬇ Download MP3</a></p>
+            `;
+        } else {
+            result.innerHTML = "❌ Failed to get MP3";
+        }
 
-    // 🎬 Step 2: Show video in website
-    player.innerHTML = `
-      <h3>${title}</h3>
-
-      <video controls width="80%">
-        <source src="${blobUrl}" type="video/mp4">
-      </video>
-
-      <br><br>
-
-      <!-- 💾 Save button -->
-      <a id="saveBtn" download="${title}.mp4" href="${blobUrl}">
-        <button style="padding:10px 20px; background:green; color:white; border:none; border-radius:5px;">
-          💾 Save to Phone
-        </button>
-      </a>
-    `;
-
-    status.innerText = "✅ Ready! Video downloaded & loaded";
-
-  } catch (err) {
-    status.innerText = "⚠️ Error occurred!";
-  }
+    } catch (err) {
+        result.innerHTML = "❌ Error: " + err.message;
+    }
 }
 </script>
 
