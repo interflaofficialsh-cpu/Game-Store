@@ -1,145 +1,52 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Glass UI</title>
-
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            background: #000;
-            font-family: Arial, sans-serif;
-        }
-
-        /* Bottom Glass Bar */
-        .glass-bar-bottom {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 65px;
-            backdrop-filter: blur(10px);
-            background: #FF6600;
-            border-top: 1px solid rgba(255, 255, 255, 0.2);
-
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-        }
-
-        /* Nav Items */
-        .nav-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            color: white;
-            font-size: 11px;
-            cursor: pointer;
-        }
-
-        .nav-item i {
-            font-size: 18px;
-            margin-bottom: 3px;
-        }
-
-        .nav-item span {
-            font-size: 10px;
-        }
-
-        /* Hover */
-        .nav-item:hover i,
-        .nav-item:hover span {
-            color: #ffff66;
-        }
-
-        /* Search */
-        .search-container {
-            margin-top: 40px;
-            display: flex;
-            justify-content: center;
-        }
-
-        .search-box {
-            width: 220px;
-            padding: 12px 20px;
-            border-radius: 30px;
-            border: none;
-            outline: none;
-            color: white;
-            font-size: 16px;
-
-            backdrop-filter: blur(10px);
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-
-        .search-box::placeholder {
-            color: #ccc;
-        }
-
-        /* Ads */
-        .ads-container {
-            margin-top: 30px;
-            display: flex;
-            justify-content: center;
-        }
-
-        .ads-box {
-            width: 95%;
-            max-width: 800px;
-            height: 120px;
-            border-radius: 20px;
-
-            backdrop-filter: blur(10px);
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 18px;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <title>YouTube Downloader</title>
 </head>
-<body>
+<body style="text-align:center; background:#111; color:#fff; padding:50px; font-family:sans-serif;">
 
-    <!-- Search -->
-    <div class="search-container">
-        <input type="text" class="search-box" placeholder="Search...">
-    </div>
+<h1>🎬 YouTube Downloader</h1>
 
-    <!-- Ads -->
-    <div class="ads-container">
-        <div class="ads-box">
-            Ads Space
-        </div>
-    </div>
+<input type="text" id="url" placeholder="Paste YouTube link" style="width:60%; padding:10px;">
+<button onclick="downloadVideo()">Download</button>
 
-    <!-- Bottom Bar -->
-    <div class="glass-bar-bottom">
-        <div class="nav-item">
-            <i class="fa fa-home"></i>
-            <span>𝗛𝗢𝗠𝗘</span>
-        </div>
-        <div class="nav-item">
-            <i class="fa fa-message"></i>
-            <span>𝗠𝗘𝗦𝗦𝗔𝗚𝗘𝗦</span>
-        </div>
-        <div class="nav-item">
-            <i class="fa fa-shopping-cart"></i>
-            <span>𝗖𝗔𝗥𝗧</span>
-        </div>
-        <div class="nav-item">
-            <i class="fa fa-user"></i>
-            <span>𝗣𝗥𝗢𝗙𝗜𝗟𝗘</span>
-        </div>
-    </div>
+<p id="status"></p>
+
+<script>
+async function downloadVideo() {
+  const url = document.getElementById("url").value;
+  const status = document.getElementById("status");
+
+  const api = `https://supunmd.vercel.app/api/download/ytmp4/dl?url=${url}&quality=720p&apikey=supunmd-kj5wxaqt3iq3vqde3sxrdl`;
+
+  status.innerText = "Processing...";
+
+  try {
+    const res = await fetch(api);
+    const data = await res.json();
+
+    if (data.status) {
+      const videoUrl = data.data.download_url;
+
+      // 👇 direct download trigger
+      const a = document.createElement("a");
+      a.href = videoUrl;
+      a.download = data.data.title + ".mp4";
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+
+      status.innerText = "✅ Download Started!";
+    } else {
+      status.innerText = "❌ Failed!";
+    }
+
+  } catch (err) {
+    status.innerText = "⚠️ Error!";
+  }
+}
+</script>
 
 </body>
 </html>
