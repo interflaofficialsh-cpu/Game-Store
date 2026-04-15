@@ -4,46 +4,73 @@
   <meta charset="UTF-8">
   <title>YouTube Downloader</title>
 </head>
-<body style="text-align:center; background:#111; color:#fff; padding:50px; font-family:sans-serif;">
+
+<body style="text-align:center; background:#111; color:#fff; padding:40px; font-family:sans-serif;">
 
 <h1>🎬 YouTube Downloader</h1>
 
-<input type="text" id="url" placeholder="Paste YouTube link" style="width:60%; padding:10px;">
-<button onclick="downloadVideo()">Download</button>
+<input type="text" id="url" placeholder="Paste YouTube link"
+style="width:60%; padding:10px;">
+
+<button onclick="startProcess()">Download</button>
 
 <p id="status"></p>
 
+<div id="player"></div>
+
 <script>
-async function downloadVideo() {
+async function startProcess() {
   const url = document.getElementById("url").value;
   const status = document.getElementById("status");
+  const player = document.getElementById("player");
+
+  player.innerHTML = "";
+  status.innerText = "⏳ Processing...";
 
   const api = `https://supunmd.vercel.app/api/download/ytmp4/dl?url=${url}&quality=720p&apikey=supunmd-kj5wxaqt3iq3vqde3sxrdl`;
-
-  status.innerText = "Processing...";
 
   try {
     const res = await fetch(api);
     const data = await res.json();
 
-    if (data.status) {
-      const videoUrl = data.data.download_url;
-
-      // 👇 direct download trigger
-      const a = document.createElement("a");
-      a.href = videoUrl;
-      a.download = data.data.title + ".mp4";
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-
-      status.innerText = "✅ Download Started!";
-    } else {
+    if (!data.status) {
       status.innerText = "❌ Failed!";
+      return;
     }
 
+    const videoUrl = data.data.download_url;
+    const title = data.data.title;
+
+    status.innerText = "⬇️ Downloading...";
+
+    // 📥 Step 1: Download video
+    const response = await fetch(videoUrl);
+    const blob = await response.blob();
+
+    const blobUrl = URL.createObjectURL(blob);
+
+    // 🎬 Step 2: Show video in website
+    player.innerHTML = `
+      <h3>${title}</h3>
+
+      <video controls width="80%">
+        <source src="${blobUrl}" type="video/mp4">
+      </video>
+
+      <br><br>
+
+      <!-- 💾 Save button -->
+      <a id="saveBtn" download="${title}.mp4" href="${blobUrl}">
+        <button style="padding:10px 20px; background:green; color:white; border:none; border-radius:5px;">
+          💾 Save to Phone
+        </button>
+      </a>
+    `;
+
+    status.innerText = "✅ Ready! Video downloaded & loaded";
+
   } catch (err) {
-    status.innerText = "⚠️ Error!";
+    status.innerText = "⚠️ Error occurred!";
   }
 }
 </script>
