@@ -1,114 +1,105 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="si">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>YouTube MP3 Downloader</title>
-
-<style>
-body {
-    font-family: Arial;
-    background: #111;
-    color: white;
-    text-align: center;
-    padding: 20px;
-}
-
-.container {
-    max-width: 500px;
-    margin: auto;
-    background: #1e1e1e;
-    padding: 20px;
-    border-radius: 10px;
-}
-
-input {
-    width: 100%;
-    padding: 10px;
-    margin-top: 10px;
-    border: none;
-    border-radius: 5px;
-}
-
-button {
-    margin-top: 10px;
-    padding: 10px;
-    width: 100%;
-    border: none;
-    background: red;
-    color: white;
-    font-size: 16px;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-button:hover {
-    background: darkred;
-}
-
-.result {
-    margin-top: 20px;
-    text-align: left;
-    background: #2a2a2a;
-    padding: 10px;
-    border-radius: 5px;
-}
-
-a {
-    color: lightgreen;
-}
-</style>
-</head>
-
-<body>
-
-<div class="container">
-    <h2>🎵 YouTube MP3 Downloader</h2>
-
-    <input type="text" id="url" placeholder="Paste YouTube URL">
-
-    <button onclick="getMP3()">Get MP3 Link</button>
-
-    <div class="result" id="result">
-        Result will show here...
-    </div>
-</div>
-
-<script>
-async function getMP3() {
-
-    let url = document.getElementById("url").value;
-    let result = document.getElementById("result");
-
-    if (!url) {
-        alert("Please enter YouTube URL");
-        return;
-    }
-
-    result.innerHTML = "Loading... ⏳";
-
-    try {
-        let api = `https://supunmd.vercel.app/api/download/ytmp3/dl?url=${encodeURIComponent(url)}&quality=128k&apikey=supunmd-kj5wxaqt3iq3vqde3sxrdl`;
-
-        let res = await fetch(api);
-        let data = await res.json();
-
-        if (data.status) {
-            result.innerHTML = `
-                <p><b>Title:</b> ${data.data.title}</p>
-                <p><b>Duration:</b> ${data.data.duration} sec</p>
-                <p><b>Quality:</b> ${data.data.quality}</p>
-                <p><a href="${data.data.downloadUrl}" target="_blank">⬇ Download MP3</a></p>
-            `;
-        } else {
-            result.innerHTML = "❌ Failed to get MP3";
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video - බලන්න</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            color: white;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
-    } catch (err) {
-        result.innerHTML = "❌ Error: " + err.message;
-    }
-}
-</script>
+        header {
+            width: 100%;
+            padding: 20px 0;
+            text-align: center;
+            background: rgba(0, 0, 0, 0.5);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 5px;
+        }
+
+        p.subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .video-container {
+            width: 90%;
+            max-width: 1000px;
+            margin: 40px auto;
+            background: #000;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
+        }
+
+        .video-wrapper {
+            position: relative;
+            padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+            height: 0;
+            overflow: hidden;
+        }
+
+        .video-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+
+        footer {
+            margin-top: auto;
+            padding: 20px;
+            text-align: center;
+            opacity: 0.7;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>🎥 Video</h1>
+        <p class="subtitle">YouTube Video එක මෙතනින් බලන්න</p>
+    </header>
+
+    <div class="video-container">
+        <div class="video-wrapper">
+            <iframe src="https://www.youtube.com/embed/GGOPy5Npo60?rel=0" 
+                    title="YouTube video player" 
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                    allowfullscreen>
+            </iframe>
+        </div>
+    </div>
+
+    <footer>
+        <p>Video එක ඔයාගේ website එකේ තියෙනවා. අවශ්‍ය නම් title එක සහ style එක වෙනස් කරගන්න පුළුවන්.</p>
+    </footer>
 
 </body>
 </html>
